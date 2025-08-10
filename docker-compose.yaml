@@ -1,6 +1,7 @@
 services:
   pinchflat:
     image: ghcr.io/kieraneglin/pinchflat:latest
+    container_name: pinchflat
     environment:
       # Set the timezone to your local timezone
       - TZ=America/Toronto
@@ -9,3 +10,21 @@ services:
     volumes:
       - ./config:/config
       - /mnt/Youtube:/mnt/Youtube
+    networks:
+      proxy:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pinchflat.entrypoints=http"
+      - "traefik.http.routers.pinchflat.rule=Host(`pinchflat.mmmo.app`)"
+      - "traefik.http.middlewares.pinchflat-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.pinchflat.middlewares=pinchflat-https-redirect"
+      - "traefik.http.routers.pinchflat-secure.entrypoints=https"
+      - "traefik.http.routers.pinchflat-secure.rule=Host(`pinchflat.mmmo.app`)"
+      - "traefik.http.routers.pinchflat-secure.tls=true"
+      - "traefik.http.routers.pinchflat-secure.service=pinchflat"
+      - "traefik.http.services.pinchflat.loadbalancer.server.port=8945"
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
