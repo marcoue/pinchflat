@@ -9,7 +9,7 @@ services:
       - '8945:8945'
     volumes:
       - ./config:/config
-      - /mnt/Youtube:/mnt/Youtube
+      - /mnt/Youtube:/downloads
     networks:
       proxy:
     labels:
