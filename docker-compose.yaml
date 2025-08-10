@@ -1,0 +1,11 @@
+services:
+  pinchflat:
+    image: ghcr.io/kieraneglin/pinchflat:latest
+    environment:
+      # Set the timezone to your local timezone
+      - TZ=America/Toronto
+    ports:
+      - '8945:8945'
+    volumes:
+      - ./config:/config
+      - /mnt/Youtube:/mnt/Youtube
